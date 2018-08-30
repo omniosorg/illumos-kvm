@@ -17,7 +17,7 @@
  * GPL HEADER END
  *
  * Copyright 2011 various Linux Kernel contributors.
- * Copyright 2018 Joyent, Inc.
+ * Copyright (c) 2015 Joyent, Inc. All Rights Reserved.
  */
 
 #ifndef __KVM_X86_HOST_H
@@ -327,14 +327,10 @@ struct pvclock_vcpu_time_info {
 	uint64_t   system_time;
 	uint32_t   tsc_to_system_mul;
 	char    tsc_shift;
-	unsigned char    flags;
-	unsigned char    pad[2];
+	unsigned char    pad[3];
 } __attribute__((__packed__)); /* 32 bytes */
 
 typedef struct pvclock_vcpu_time_info pvclock_vcpu_time_info_t;
-
-/* Values for pvclock_vcpu_time_info_t`flags: */
-#define PVCLOCK_TSC_STABLE_BIT  (1 << 0)
 
 typedef struct msi_msg {
 	uint32_t	address_lo;	/* low 32 bits of msi msg. address */
@@ -446,9 +442,13 @@ typedef struct kvm_vcpu_arch {
 
 	struct x86_emulate_ctxt emulate_ctxt;
 
-	gpa_t time_addr;
-	gpa_t time_val;
-	hrtime_t time_update;
+	gpa_t time;
+
+	struct pvclock_vcpu_time_info hv_clock;
+
+	unsigned int hv_clock_tsc_khz;
+	unsigned int time_offset;
+	page_t *time_page;
 
 	int nmi_pending;
 	int nmi_injected;
@@ -529,9 +529,7 @@ typedef struct kvm_arch {
 
 	unsigned long irq_sources_bitmap;
 	uint64_t tsc_offset;
-
-	struct timespec boot_wallclock;
-	hrtime_t boot_hrtime;
+	int64_t kvmclock_offset;
 
 	struct kvm_xen_hvm_config xen_hvm_config;
 
