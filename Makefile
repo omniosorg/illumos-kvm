@@ -2,8 +2,6 @@
 # Copyright (c) 2019, Joyent, Inc.
 #
 
-include		$(PWD)/../../../build.env
-
 KERNEL_SOURCE =	$(PWD)/../../illumos
 MDB_SOURCE =	$(KERNEL_SOURCE)/usr/src/cmd/mdb
 PROTO_AREA =	$(PWD)/../../../proto
