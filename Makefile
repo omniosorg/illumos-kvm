@@ -93,6 +93,13 @@ ALWAYS_CFLAGS = \
 	-fno-inline-functions
 
 #
+# Skip dangerous GCC options (not that any specific problems are know of here).
+#
+ifneq ($(PRIMARY_COMPILER_VER),4)
+ALWAYS_CFLAGS += -fno-aggressive-loop-optimizations
+endif
+
+#
 # Replacing -O with -O2 causes the KVM host to panic.  Don't do that.
 #
 KERNEL_CFLAGS = \
