@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2019, Joyent, Inc.
+# Copyright 2019 Joyent, Inc.
 #
 
 KERNEL_SOURCE =	$(PWD)/../../illumos
@@ -106,6 +106,7 @@ KERNEL_CFLAGS = \
 	$(ALWAYS_CFLAGS) \
 	-m64 \
 	-mcmodel=kernel \
+	-fno-shrink-wrap \
 	-g \
 	-O \
 	-fno-inline \
