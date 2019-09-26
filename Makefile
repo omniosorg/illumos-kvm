@@ -107,6 +107,8 @@ KERNEL_CFLAGS = \
 	-m64 \
 	-mcmodel=kernel \
 	-fno-shrink-wrap \
+	-mindirect-branch=thunk-extern \
+	-mindirect-branch-register \
 	-g \
 	-O \
 	-fno-inline \
